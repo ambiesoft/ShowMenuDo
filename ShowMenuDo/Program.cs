@@ -10,8 +10,17 @@ namespace ShowMenuDo
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            if(args.Length > 0 &&
+                ((args[0] == "--version") ||
+                (args[0] == "-v")))
+            {
+                MessageBox.Show("ShowMenuDo ver1.0.0",
+                    Application.ProductName,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             string[] menuTexts = { 
                 "フライト",
                 "空港駐車場",

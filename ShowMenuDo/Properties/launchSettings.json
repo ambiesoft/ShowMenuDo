@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ShowMenuDo": {
+      "commandName": "Project",
+      "commandLineArgs": "-v"
+    }
+  }
+}
