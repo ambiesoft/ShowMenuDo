@@ -4,6 +4,16 @@ using System.Windows.Forms;
 
 namespace ShowMenuDo
 {
+    class MenuText
+    {
+         public string Text { get; set; }
+        public string FirstLetter { get; set; }
+        public MenuText(string text, string firstLetter)
+        {
+            Text = text;
+            FirstLetter = firstLetter;
+        }
+    }
     internal static class Program
     {
         /// <summary>
@@ -21,11 +31,18 @@ namespace ShowMenuDo
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            string[] menuTexts = { 
-                "フライト",
-                "空港駐車場",
-                "花の配達オプション",
-            "ストリーミングプラットフォーム"};
+            MenuText[] menuTexts = { 
+                new MenuText("フライト", "ふ"),
+                new MenuText("空港駐車場", "く"),
+                new MenuText("花の配達オプション", "は"),
+                new MenuText("ストリーミングプラットフォーム", "す"),
+                new MenuText("クレジットレポート", "く"),
+                new MenuText("レシピ", "れ"),
+                new MenuText("Elden Ring", "え"),
+            };
+            // sort menuTexts by FirstLetter
+            Array.Sort(menuTexts, (x, y) => string.Compare(x.FirstLetter, y.FirstLetter, StringComparison.Ordinal));
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
@@ -35,7 +52,7 @@ namespace ShowMenuDo
 
             for(int i = 0; i < menuTexts.Length; i++)
             {
-                ToolStripMenuItem item = new ToolStripMenuItem(menuTexts[i]);
+                ToolStripMenuItem item = new ToolStripMenuItem(menuTexts[i].Text);
                 item.Tag = menuTexts[i];
                 item.Click += CopyItem_Click;
                 cxtMenu.Items.Add(item);
@@ -65,7 +82,7 @@ namespace ShowMenuDo
             // Show the owner form (invisible) and then show the context menu relative to it.
             ownerForm.Show();
             Point clientPoint = ownerForm.PointToClient(Cursor.Position);
-            cxtMenu.Show(ownerForm, clientPoint);
+            cxtMenu.Show(ownerForm, clientPoint, ToolStripDropDownDirection.AboveRight);
 
             // Start a message loop tied to the owner form so closing the form ends the app.
             Application.Run(ownerForm);
@@ -76,9 +93,9 @@ namespace ShowMenuDo
             try
             {
                 // Example action: place a sample text on the clipboard.
-                if (sender is ToolStripMenuItem item && item.Tag is string text)
+                if (sender is ToolStripMenuItem item && item.Tag is MenuText menuText)
                 {
-                    Clipboard.SetText(text);
+                    Clipboard.SetText(menuText.Text);
                 }
             }
             catch
